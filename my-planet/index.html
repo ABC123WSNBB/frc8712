@@ -1074,7 +1074,7 @@ function rasterizeText(text) {
   const len = text.length;
   const fontSize = Math.floor(Math.min(FX_TEX_W / (len * 1.02), FX_TEX_H * 0.50));
   ctx.fillStyle = '#ffffff';
-  ctx.font = `900 ${fontSize}px "PingFang SC", "Microsoft YaHei", sans-serif`;
+  ctx.font = `900 ${fontSize}px "SF Pro Display", "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText(text, FX_TEX_W / 2, FX_TEX_H / 2);
