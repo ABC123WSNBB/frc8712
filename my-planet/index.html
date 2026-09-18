@@ -1072,7 +1072,8 @@ function rasterizeText(text) {
   c.width = FX_TEX_W; c.height = FX_TEX_H;
   const ctx = c.getContext('2d');
   const len = text.length;
-  const fontSize = Math.floor(Math.min(FX_TEX_W / (len * 1.02), FX_TEX_H * 0.50));
+  // 参考示例站：优先放大文字，并按字符数自适应，复杂汉字保持足够笔画间距
+  const fontSize = Math.floor(Math.min(FX_TEX_W / Math.max(len * 1.08, 1), FX_TEX_H * 0.72));
   ctx.fillStyle = '#ffffff';
   ctx.font = `900 ${fontSize}px "SF Pro Display", "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif`;
   ctx.textAlign = 'center';
@@ -1080,7 +1081,8 @@ function rasterizeText(text) {
   ctx.fillText(text, FX_TEX_W / 2, FX_TEX_H / 2);
   const img = ctx.getImageData(0, 0, FX_TEX_W, FX_TEX_H).data;
   const pts = [];
-  const step = 2;
+  // 细采样提高密集笔画的连续性和清晰度
+  const step = 1;
   for (let y = 0; y < FX_TEX_H; y += step) {
     for (let x = 0; x < FX_TEX_W; x += step) {
       if (img[(y * FX_TEX_W + x) * 4 + 3] > 120) pts.push(x, y);
@@ -1388,8 +1390,7 @@ function updateFX(dt) {
   fxPhaseTime += dt;
 
   if (fxPhase === 'explode') {
-    // 跳过中央祝福文字，爆发后直接展示爱心效果
-    if (fxPhaseTime >= EXPLODE_HOLD) enterHeart();
+    if (fxPhaseTime >= EXPLODE_HOLD) enterText();
   } else if (fxPhase === 'text') {
     if (fxPhaseTime >= TEXT_HOLD) {
       blessingIndex++;
