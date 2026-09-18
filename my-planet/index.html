@@ -343,7 +343,7 @@
   #closeSettings { position:absolute; top:18px; right:20px; background:none; border:0; color:#bcb2cc; cursor:pointer; font-size:24px; }
   #toast { position:fixed; bottom:166px; left:50%; transform:translateX(-50%); z-index:10; background:#191326ed; color:#e6d6ff; border:1px solid #ffffff22; border-radius:12px; padding:12px 20px; font-size:13px; max-width:90vw; text-align:center; }
   #toast:empty { display:none; }
-  #blessingCaption { position:fixed; left:16px; right:16px; bottom:160px; z-index:5; text-align:center; color:#fff2d6; font-size:clamp(18px,3vw,28px); letter-spacing:.12em; text-shadow:0 2px 12px #000,0 0 24px #000; pointer-events:none; }
+  #blessingCaption { display:none; }
   @media(max-width:640px) {
     .signature { top:20px; left:16px; font-size:9px; }
     .personalize { top:12px; right:12px; }
@@ -1352,7 +1352,7 @@ function enterReform() {
 }
 
 function goExplode() {
-  document.getElementById('blessingCaption').textContent = '祝福正在绽放…';
+  document.getElementById('blessingCaption').textContent = '';
   fxPhase = 'explode';
   fxPhaseTime = 0;
   planet.visible = false;
