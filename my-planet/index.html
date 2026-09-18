@@ -355,16 +355,7 @@
     dialog { padding:24px; }
   }
 
-  #blessingText {
-    position: fixed; left: 50%; top: 48%; transform: translate(-50%, -50%);
-    z-index: 6; width: max-content; max-width: calc(100vw - 48px);
-    padding: 20px 28px; border-radius: 24px;
-    background: rgba(2, 2, 10, 0.88); color: #fff2d6;
-    font-size: clamp(30px, 6vw, 64px); font-weight: 500;
-    line-height: 1.6; letter-spacing: 0.12em; text-align: center;
-    overflow-wrap: anywhere; pointer-events: none;
-  }
-  #blessingText:empty { display: none; }
+  #blessingText { display: none; }
 </style>
 </head>
 <body>
@@ -1291,10 +1282,10 @@ function setExplodeTargets() {
 }
 
 function setTextTarget(text) {
-  // 实心文字独立于 WebGL，避免粒子空隙、星环遮挡与缩放影响可读性。
-  document.getElementById('blessingText').textContent = text;
-  fxMaterial.uniforms.uOpacity.value = 0.12;
-  document.getElementById('blessingCaption').textContent = text;
+  // 只显示 WebGL 粒子文字，不叠加普通 HTML 文字。
+  document.getElementById('blessingText').textContent = '';
+  fxMaterial.uniforms.uOpacity.value = 1.0;
+  document.getElementById('blessingCaption').textContent = '';
   fxTargetArray = textTargetCache.get(text);
   setFxColors(() => {
     const r = Math.random();
