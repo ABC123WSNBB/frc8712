@@ -1,7 +1,7 @@
 import './style.css';
 import { STORAGE_KEY, today, seedPlans, validateDocument, progress, removePlan, visualState, statuses } from './data.js';
 import { createGraph } from './graph.js';
-import { createHandController, features, GestureState } from './gestures.js';
+import { createHandController, features, GestureState, smoothFeatures, GESTURE_RATES } from './gestures.js';
 
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -102,18 +102,18 @@ $('#import-file').onchange=async e=>{
   try{if(file.size>10*1024*1024)throw new Error('文件不能超过 10 MB。');const doc=validateDocument(JSON.parse(await file.text()));if(confirm(`导入 ${doc.plans.length} 个计划并替换当前数据？请确认已导出所需备份。`)){localStorage.setItem(STORAGE_KEY,JSON.stringify(doc));readOnly=false;plans=doc.plans;selected=null;render();notify('计划已导入');}}catch(err){notify(`导入失败，原数据未更改：${err.message}`);}finally{e.target.value='';}
 };
 
-const gestureNames={idle:'食指指向选择 · 拇指食指捏合转动',lost:'未检测到手，已暂停',settling:'正在确认手势…',rotate:'碗状手 · 仅转腕旋转',zoomIn:'五指张开 · 放大',zoomOut:'握拳 · 缩小',point:'食指指向 · 已选择',pinch:'食指与拇指捏合 · 准备旋转',pinchRotate:'捏住并转腕 · 旋转'};
+const gestureNames={idle:'食指指向选择 · 拇指食指捏合转动',lost:'未检测到手，已暂停',settling:'正在确认手势…',rotate:'碗状手 · 仅转腕旋转',zoomIn:'五指张开 · 放大',zoomOut:'握拳 · 缩小',point:'食指指向 · 停留打开',pinch:'捏合锁定 · 松开打开，转腕旋转',pinchRotate:'捏住并转腕 · 旋转'};
 const gesture=new GestureState();let smoothed=null,lastFrame=0;
 const hand=createHandController({video:$('#preview'),onStatus:message=>{$('#gesture-status').textContent=message;if(!hand.active){$('#camera').textContent='启用摄像头';$('#preview').hidden=true;}},onFrame:points=>{
   const time=performance.now();const dt=Math.min((time-lastFrame)/1000,.07);lastFrame=time;
-  if(!points){gesture.step(null,time);smoothed=null;$('#hand-pointer').hidden=true;$('#gesture-status').textContent=gestureNames.lost;return;}
-  if($('#editor').open){gesture.reset();$('#hand-pointer').hidden=true;$('#gesture-status').textContent='编辑计划中，手势已暂停';return;}
-  const f=features(points,gesture.mode);smoothed=smoothed?{x:smoothed.x*.82+f.x*.18,y:smoothed.y*.82+f.y*.18,yaw:smoothed.yaw*.88+f.yaw*.12,pitch:smoothed.pitch*.88+f.pitch*.12,openness:smoothed.openness*.78+f.openness*.22}:{x:f.x,y:f.y,yaw:f.yaw,pitch:f.pitch,openness:f.openness};
+  if(!points){gesture.step(null,time);smoothed=null;hovered=null;graph.highlight(selected);$('#hand-pointer').hidden=true;$('#gesture-status').textContent=gestureNames.lost;return;}
+  if($('#editor').open){gesture.reset();smoothed=null;$('#hand-pointer').hidden=true;$('#gesture-status').textContent='编辑计划中，手势已暂停';return;}
+  const f=features(points,gesture.mode);smoothed=smoothFeatures(smoothed,f,dt);
   Object.assign(f,smoothed);const rect=$('#graph').getBoundingClientRect();const x=f.x*rect.width,y=f.y*rect.height;
   const result=gesture.step(f,time,graph.pick(x,y));$('#gesture-status').textContent=gestureNames[result.mode];
   const sensitivity=Number($('#sensitivity').value);
-  if(result.mode==='zoomIn')graph.zoom(-dt*.38*sensitivity);if(result.mode==='zoomOut')graph.zoom(dt*.28*sensitivity);
-  if((result.mode==='rotate'||result.mode==='pinchRotate')&&result.dx!==undefined)graph.rotate(-result.dx*sensitivity*1.7,result.dy*sensitivity*1.7);
+  if(result.mode==='zoomIn')graph.zoom(-dt * GESTURE_RATES.zoomIn*sensitivity);if(result.mode==='zoomOut')graph.zoom(dt * GESTURE_RATES.zoomOut*sensitivity);
+  if((result.mode==='rotate'||result.mode==='pinchRotate')&&result.dx!==undefined)graph.rotate(-result.dx*sensitivity * GESTURE_RATES.rotation,result.dy*sensitivity * GESTURE_RATES.rotation);
   const pointing=['point','pinch','pinchRotate'].includes(result.mode);$('#hand-pointer').hidden=!pointing;
   if(pointing){$('#hand-pointer').style.left=`${x}px`;$('#hand-pointer').style.top=`${y}px`;$('#hand-pointer').classList.toggle('pinched',result.mode==='pinch'||result.mode==='pinchRotate');$('#hand-pointer').classList.toggle('rotating',result.mode==='pinchRotate');hovered=gesture.locked||graph.pick(x,y);graph.highlight(hovered||selected);}else if(hovered){hovered=null;graph.highlight(selected);}
   if(result.click){select(result.click);$('#gesture-status').textContent='已打开计划';}

@@ -1,5 +1,5 @@
 import { createGraph } from './graph.js';
-import { createHandController, features, GestureState } from './gestures.js';
+import { createHandController, features, GestureState, smoothFeatures, GESTURE_RATES } from './gestures.js';
 import { validateDocument } from './data.js';
 import styles from './module.css?inline';
 
@@ -31,20 +31,20 @@ export function mountPlanGraph(container, options = {}) {
   const hand = config.camera ? createHandController({ video, modelAssetPath: config.modelAssetPath, wasmPath: config.wasmPath, onStatus: status => emit('onStatus', status), onFrame: points => {
     if (destroyed) return;
     const time = performance.now(), dt = Math.min((time - lastFrame) / 1000, .07); lastFrame = time;
-    if (!points) { gesture.step(null, time); smoothed = null; pointer.hidden = true; emit('onGesture', { mode: 'lost' }); return; }
+    if (!points) { gesture.step(null, time); smoothed = null; pointer.hidden = true; hovered=null; graph.highlight(selected); emit('onGesture', { mode: 'lost' }); return; }
     const f = features(points, gesture.mode);
-    smoothed = smoothed ? { x: smoothed.x * .82 + f.x * .18, y: smoothed.y * .82 + f.y * .18, yaw: smoothed.yaw * .88 + f.yaw * .12, pitch: smoothed.pitch * .88 + f.pitch * .12, openness: smoothed.openness * .78 + f.openness * .22 } : { x: f.x, y: f.y, yaw: f.yaw, pitch: f.pitch, openness: f.openness };
+    smoothed = smoothFeatures(smoothed,f,dt);
     Object.assign(f, smoothed);
     const rect = graphHost.getBoundingClientRect(), x = f.x * rect.width, y = f.y * rect.height;
     const target=graph.pick(x,y);
     const result = gesture.step(f, time, target);
     const sensitivity = Number(config.sensitivity) || 1;
-    if (result.mode === 'zoomIn') graph.zoom(-dt * .38 * sensitivity);
-    if (result.mode === 'zoomOut') graph.zoom(dt * .28 * sensitivity);
-    if ((result.mode === 'rotate' || result.mode === 'pinchRotate') && result.dx !== undefined) graph.rotate(-result.dx * sensitivity * 1.7, result.dy * sensitivity * 1.7);
+    if (result.mode === 'zoomIn') graph.zoom(-dt * GESTURE_RATES.zoomIn * sensitivity);
+    if (result.mode === 'zoomOut') graph.zoom(dt * GESTURE_RATES.zoomOut * sensitivity);
+    if ((result.mode === 'rotate' || result.mode === 'pinchRotate') && result.dx !== undefined) graph.rotate(-result.dx * sensitivity * GESTURE_RATES.rotation, result.dy * sensitivity * GESTURE_RATES.rotation);
     const pointing = ['point', 'pinch', 'pinchRotate'].includes(result.mode);
     pointer.hidden = !config.showPointer || !pointing;
-    if (pointing) { pointer.style.left = `${x}px`; pointer.style.top = `${y}px`; pointer.classList.toggle('pinched', result.mode !== 'point'); hovered = gesture.locked || graph.pick(x, y); graph.highlight(hovered || selected); }
+    if (pointing) { pointer.style.left = `${x}px`; pointer.style.top = `${y}px`; pointer.classList.toggle('pinched', result.mode !== 'point'); hovered = gesture.locked || graph.pick(x, y); graph.highlight(hovered || selected); } else { hovered=null; graph.highlight(selected); }
     if (result.click && plans.some(p=>p.id===result.click)) select(result.click);
     emit('onGesture', { mode: result.mode, selected, pointer: { x, y } });
   }}) : null;
@@ -57,7 +57,7 @@ export function mountPlanGraph(container, options = {}) {
   window.addEventListener('pagehide',()=>api.stopCamera(),{signal:events.signal});
   surface.addEventListener('keydown',e=>{const actions={ArrowLeft:()=>graph.rotate(-.08,0),ArrowRight:()=>graph.rotate(.08,0),ArrowUp:()=>graph.rotate(0,-.08),ArrowDown:()=>graph.rotate(0,.08),'+':()=>graph.zoom(-.1),'-':()=>graph.zoom(.1)};if(actions[e.key]){e.preventDefault();e.stopPropagation();actions[e.key]();}},{signal:events.signal});
   const api = {
-    setPlans(next) { alive(); const validated=normalize(next);plans=validated;if(!plans.some(p=>p.id===selected))selected=null;gesture.reset();graph.update(plans, plans);graph.highlight(selected);return api; },
+    setPlans(next) { alive(); const validated=normalize(next);plans=validated;if(!plans.some(p=>p.id===selected))selected=null;gesture.reset();smoothed=null;hovered=null;pointer.hidden=true;graph.update(plans, plans);graph.highlight(selected);return api; },
     getPlans() { alive();return structuredClone(plans); },
     select(id) { alive();if(id!==null&&!plans.some(p=>p.id===id))throw new Error('Unknown plan ID');select(id);return api; },
     resetView() { alive();graph.reset();return api; },

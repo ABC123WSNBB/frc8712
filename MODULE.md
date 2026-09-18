@@ -19,6 +19,8 @@ await graph.startCamera();
 
 接口：`setPlans(plans)`、`getPlans()`、`select(id)`、`resetView()`、`zoom(amount)`、`rotate(x, y)`、`startCamera()`、`stopCamera()`、`destroy()`。
 
+手势：食指连续停留 420ms 打开一次；指向后捏合锁定，松开稳定 80ms 打开。捏合中转腕超过 0.06 弧度后只旋转，松开不打开；无目标时捏合不复位。目标触发后需离开至少 200ms 才能再次触发。追踪恢复等待 200ms；缩放进入等待分别为放大 120ms、缩小 180ms。两个页面共用按时间平滑及状态机。
+
 模块通过回调及冒泡 DOM 事件派发 `onSelect`、`onGesture`、`onStatus`、`onDestroy`。计划对象至少需要 `id`、`title`、`type`（`day`/`month`）、`date`；`status` 默认 pending，`parentId` 默认 null。同月的日计划可以关联月计划。数据更新先校验再应用，内部持有副本，不改变宿主对象。模块不读取或写入 localStorage。
 
 深空粒子星球、星云、螺旋星系和彗星均为非交互背景，不参与鼠标、触控或手势命中。为兼容旧宿主，`onCosmicSelect`、`getCosmicObjects()` 与 `interactCosmic(id)` 仍保留：该回调不会触发，前者方法返回空数组，后者为无副作用的链式调用。

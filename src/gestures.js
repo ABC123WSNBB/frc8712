@@ -21,40 +21,7 @@ export function features(points, previousPose='idle') {
   const sign=n.z<0?-1:1;
   return { pose:open?'zoomIn':fist?'zoomOut':bowl?'rotate':extended[0]?'point':'idle', openness, pinch, x:1-points[8].x,y:points[8].y,yaw:Math.atan2(n.x*sign,Math.abs(n.z)),pitch:Math.atan2(n.y*sign,Math.hypot(n.x,n.z)) };
 }
-export class GestureState {
-  constructor(){this.reset();}
-  reset(){this.mode='idle';this.candidate='idle';this.since=0;this.previous=null;this.pinched=false;this.locked=null;this.lastTarget=null;this.targetAt=0;this.pinchAt=0;this.pointTarget=null;this.pointSince=0;this.pointFired=false;}
-  step(f,time,target){
-    if(!f){this.reset();return {mode:'lost'};}
-    if(f.pose==='point'&&target){this.lastTarget=target;this.targetAt=time;if(this.pointTarget!==target){this.pointTarget=target;this.pointSince=time;this.pointFired=false;}}
-    // Use continuous finger openness so partial fists and partial spreads still zoom.
-    if(!this.pinched && f.pose!=='point' && f.pose!=='rotate'){
-    if(f.openness > 1.9) this.mode='zoomIn';
-      else if(f.openness < 1.72) this.mode='zoomOut';
-    if(!this.pinched && f.pose!=='point' && f.pose!=='rotate' && (f.openness>1.9||f.openness<1.72)) return {mode:this.mode};
-    }
-    if(f.pose==='point'&&this.pointTarget&&target===this.pointTarget&&!this.pointFired&&time-this.pointSince>420){this.pointFired=true;return {mode:'point',click:target};}
-    if(this.pinched){
-      if(time-this.pinchAt>1800){this.reset();return {mode:'idle'};}
-      if(f.pinch>.44){const click=this.locked;const reset=!click;this.reset();return {mode:'point',click,reset};}
-      if(!this.locked && time-this.pinchAt>300){const result={mode:'pinchRotate'};if(this.previous){let dx=f.yaw-this.previous.yaw,dy=f.pitch-this.previous.pitch;dx=Math.abs(dx)<.018?0:Math.max(-.12,Math.min(.12,dx));dy=Math.abs(dy)<.018?0:Math.max(-.12,Math.min(.12,dy));result.dx=dx;result.dy=dy;}this.previous={yaw:f.yaw,pitch:f.pitch};return result;}
-      return {mode:'pinch'};
-    }
-    if(f.pinch<.42){
-      this.pinched=true;this.pinchAt=time;this.locked=null;this.previous=null;return {mode:'pinch'};
-    }
-    if(f.pose!==this.candidate){this.candidate=f.pose;this.since=time;this.previous=null;}
-    if(time-this.since<300){return {mode:'settling'};}
-    if(this.mode!==f.pose){this.mode=f.pose;this.previous=null;}
-    const result={mode:this.mode};
-    if(this.mode==='rotate'){
-      if(this.previous){result.dx=f.yaw-this.previous.yaw;result.dy=f.pitch-this.previous.pitch;}
-      this.previous={yaw:f.yaw,pitch:f.pitch};
-    }else this.previous=null;
-    if(!['idle','point'].includes(this.mode)){this.lastTarget=null;}
-    return result;
-  }
-}
+export { GestureState, smoothFeatures, GESTURE_RATES } from './gesture-state.js';
 export function createHandController({video,onFrame,onStatus,modelAssetPath='/mediapipe/hand_landmarker.task',wasmPath='/mediapipe/wasm'}){
   let detector,stream,frame,active=false,lastTime=-1,generation=0,disposed=false;
   return {
