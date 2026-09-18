@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="冯若辰的个人在线简历：AI 学习路径、实践经历、技能与荣誉。">
+  <meta name="theme-color" content="#0d4fb5">
+  <meta name="color-scheme" content="light dark">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="冯若辰｜AI Signal Profile">
+  <meta property="og:description" content="用可验证成果呈现学习力、执行力与 AI 应用方向。">
+  <meta property="og:image" content="assets/images/profile.jpg">
+  <title>冯若辰｜AI Signal Profile</title>
+  <link rel="icon" href="assets/images/profile.jpg" type="image/jpeg">
+  <link rel="stylesheet" href="assets/css/styles.css?v=20260905-aligned">
+</head>
+<body>
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+  <section class="welcome-screen" id="welcomeScreen" aria-label="欢迎页面">
+    <canvas class="welcome-canvas" id="welcomeCanvas" aria-hidden="true"></canvas>
+    <div class="welcome-hud" aria-hidden="true">
+      <span class="welcome-status">SYSTEM ONLINE · AI SIGNAL READY</span>
+      <span class="welcome-coords" id="welcomeCoords">X 0000 / Y 0000</span>
+      <i class="welcome-corner tl"></i><i class="welcome-corner tr"></i>
+      <i class="welcome-corner bl"></i><i class="welcome-corner br"></i>
+    </div>
+    <div class="welcome-inner">
+      <p class="welcome-overline">FENG RUOCHEN · PERSONAL RESUME</p>
+      <h1 class="welcome-title">AI SIGNAL</h1>
+      <p class="welcome-subtitle">LEARNING · ACTION · EVOLUTION</p>
+      <div class="welcome-line" aria-hidden="true"></div>
+      <button class="welcome-enter" id="enterSite" type="button">
+        <i aria-hidden="true">→</i><span>ENTER</span><small>点击进入</small>
+      </button>
+    </div>
+  </section>
+
+  <a class="skip" href="#main">跳到主要内容</a>
+
+  <header class="topbar" id="topbar">
+    <div class="container nav">
+      <a class="brand" href="#home" aria-label="返回首页"><i>冯</i><span>冯若辰</span></a>
+      <nav class="navlinks" aria-label="页面导航">
+        <a href="#highlights">亮点</a>
+        <a href="#aiPath">AI 路径</a>
+        <a href="#experience">经历</a>
+        <a href="#projects">项目</a>
+        <a href="#skills">技能</a>
+        <a href="#education">教育</a>
+      </nav>
+      <div class="actions">
+        <button class="navbtn music-btn" id="music" type="button" aria-label="播放背景音乐" aria-pressed="false" title="播放背景音乐">
+          <span class="music-disc" aria-hidden="true">♪</span><span class="music-label">音乐</span>
+        </button>
+        <button class="navbtn" id="theme" type="button" aria-label="切换深浅色">☾</button>
+        <button class="navbtn print" id="print" type="button" aria-label="打印或保存简历">⎙ <span>下载简历</span></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="home">
+      <canvas class="hero-signal-canvas" id="signalCanvas" aria-hidden="true"></canvas>
+      <div class="signal-readout" aria-hidden="true">
+        <span><i></i> SIGNAL ACTIVE</span>
+        <span>8 CERTIFICATIONS</span>
+        <span>2026 / GUANGZHOU</span>
+      </div>
+      <div class="container hero-container">
+        <div class="hero-stage"><article class="hero-card" id="hero"></article></div>
+      </div>
+    </section>
+
+    <section class="section" id="highlights">
+      <div class="container paper">
+        <div class="section-head">
+          <div><p class="kicker">KEY RESULTS</p><h2 class="title">用结果介绍自己</h2></div>
+          <p class="note">学习力、执行力与长期坚持，都落在可以被验证的结果上。</p>
+        </div>
+        <div class="highlights" id="highlightGrid"></div>
+      </div>
+    </section>
+
+    <section class="section ai-section" id="aiPath">
+      <div class="container ai-shell">
+        <div class="ai-heading">
+          <div>
+            <p class="ai-eyebrow"><span></span> AI LEARNING GRAPH / 2026</p>
+            <h2>八项认证，四条能力路径</h2>
+            <p>不是罗列证书，而是展示我如何从内容生成走向智能体、开发工具与视觉 AI。点击任一节点查看认证依据。</p>
+          </div>
+          <div class="ai-score" aria-label="AI 专项认证共八项"><strong>08</strong><span>VERIFIED<br>CERTIFICATES</span></div>
+        </div>
+        <div class="ai-filter" id="aiFilter" role="toolbar" aria-label="筛选 AI 能力路径"></div>
+        <div class="ai-path" id="aiPathGrid"></div>
+        <div class="ai-legend" aria-hidden="true">
+          <span><i></i> CERTIFIED LEARNING</span><span>CLICK NODE TO INSPECT EVIDENCE ↗</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="experience">
+      <div class="container paper">
+        <div class="section-head">
+          <div><p class="kicker">EXPERIENCE</p><h2 class="title">经历与实践</h2></div>
+          <p class="note">大型活动执行、团队训练与英语辅导实践。</p>
+        </div>
+        <div id="experienceTabs"></div>
+      </div>
+    </section>
+
+    <section class="section" id="projects">
+      <div class="container paper">
+        <div class="section-head">
+          <div><p class="kicker">PRACTICE</p><h2 class="title">行动与项目实践</h2></div>
+          <p class="note">关注行动过程、解决方法与实际结果。</p>
+        </div>
+        <div id="projectTabs"></div>
+      </div>
+    </section>
+
+    <section class="section" id="skills">
+      <div class="container paper">
+        <div class="section-head">
+          <div><p class="kicker">CAPABILITIES</p><h2 class="title">技能矩阵</h2></div>
+          <p class="note">AI 学习方向、区块链专业基础与综合实践能力。</p>
+        </div>
+        <div class="skills" id="skillGrid"></div>
+      </div>
+    </section>
+
+    <section class="section" id="education">
+      <div class="container paper">
+        <div class="section-head">
+          <div><p class="kicker">EDUCATION & HONORS</p><h2 class="title">教育背景与荣誉</h2></div>
+          <p class="note">从高中实践走向区块链工程本科阶段，保持主动学习。</p>
+        </div>
+        <div class="education" id="educationGrid"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container foot">
+      <span>© 2026 冯若辰 · AI SIGNAL PROFILE</span>
+      <span>最后更新：2026-08-26</span>
+    </div>
+  </footer>
+
+  <audio id="bgMusic" data-src="assets/audio/background-music.mp3" preload="none" loop></audio>
+
+  <div class="lightbox" id="certificateLightbox" role="dialog" aria-modal="true" aria-label="AI 证书图片预览" aria-hidden="true">
+    <div class="lightbox-stage">
+      <button class="lightbox-button lightbox-close" id="lightboxClose" type="button" aria-label="关闭预览">×</button>
+      <button class="lightbox-button lightbox-prev" id="lightboxPrev" type="button" aria-label="上一张证书">‹</button>
+      <img class="lightbox-image" id="lightboxImage" alt="AI 证书大图">
+      <button class="lightbox-button lightbox-next" id="lightboxNext" type="button" aria-label="下一张证书">›</button>
+      <div class="lightbox-meta"><span id="lightboxTitle">AI 专项技能认证</span><span id="lightboxCounter">1 / 8</span></div>
+    </div>
+  </div>
+
+  <button class="top" id="backTop" type="button" aria-label="返回顶部">↑</button>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="assets/js/resume-data.js" defer></script>
+  <script src="assets/js/app.js" defer></script>
+</body>
+</html>

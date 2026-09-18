@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="冯若辰个人简历网站">
+  <meta name="color-scheme" content="light dark">
+  <title>冯若辰｜个人简历</title>
+  <style>
+    :root{
+      --blue:#1768d5;--blue-2:#5a91e2;--blue-3:#0d4fb5;--cyan:#19c6df;
+      --paper:#fff;--ink:#14213d;--muted:#62718d;--line:#dfe8f6;--soft:#eff6ff;
+      --info-paper:#fff;--info-ink:#14213d;--info-muted:#62718d;--info-line:#dfe8f6;
+      --shadow:0 28px 70px rgba(5,45,112,.24);--radius:28px;--max:1120px;
+    }
+    html[data-theme="dark"]{
+      --blue:#082e70;--blue-2:#1458aa;--blue-3:#061e4c;--paper:#111d33;
+      --ink:#f4f8ff;--muted:#afbfda;--line:#293b59;--soft:#172846;
+      --shadow:0 30px 80px rgba(0,0,0,.34)
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:90px}
+    body{margin:0;color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;line-height:1.75;background:linear-gradient(135deg,var(--blue-2),var(--blue) 52%,var(--blue-3));min-height:100vh;transition:.22s ease}
+    body:before,body:after{content:"";position:fixed;z-index:-1;border-radius:50%;filter:blur(2px);pointer-events:none}
+    body:before{width:520px;height:520px;left:-180px;top:12%;background:rgba(255,255,255,.13)}
+    body:after{width:640px;height:640px;right:-260px;bottom:-170px;background:rgba(25,198,223,.13)}
+    a{color:inherit;text-decoration:none}button{font:inherit;color:inherit}
+    a:focus-visible,button:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+    .container{width:min(calc(100% - 36px),var(--max));margin:auto}
+    .skip{position:fixed;z-index:9999;left:10px;top:8px;padding:8px 12px;background:#fff;color:#1457bd;border-radius:9px;transform:translateY(-150%)}.skip:focus{transform:none}
+    .topbar{position:fixed;z-index:1000;inset:0 0 auto;height:72px;color:#fff;transition:.2s ease}
+    .topbar.scrolled{background:rgba(7,54,127,.72);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.16);box-shadow:0 8px 30px rgba(0,20,65,.15)}
+    .nav{height:100%;display:flex;align-items:center;gap:22px}.brand{display:flex;align-items:center;gap:10px;font-weight:900;white-space:nowrap}.brand i{display:grid;width:39px;height:39px;place-items:center;border-radius:12px;background:#fff;color:#1768d5;font-style:normal;box-shadow:0 10px 24px rgba(0,30,85,.18)}
+    .navlinks{display:flex;justify-content:center;gap:3px;flex:1}.navlinks a{padding:7px 10px;border-radius:9px;font-size:14px;font-weight:700;color:rgba(255,255,255,.78)}.navlinks a:hover,.navlinks a.active{color:#fff;background:rgba(255,255,255,.15)}
+    .actions{display:flex;gap:8px}.navbtn{min-height:40px;padding:0 13px;border:1px solid rgba(255,255,255,.28);border-radius:12px;background:rgba(255,255,255,.12);color:#fff;cursor:pointer;backdrop-filter:blur(10px);font-weight:800}.navbtn:hover{background:rgba(255,255,255,.22)}
+    .music-btn{display:inline-flex;align-items:center;gap:7px}.music-disc{display:grid;width:23px;height:23px;place-items:center;border:1px solid rgba(255,255,255,.45);border-radius:50%;font-size:12px;line-height:1}.music-btn.playing .music-disc{animation:musicSpin 3.4s linear infinite}.music-btn.playing{background:rgba(255,255,255,.25);box-shadow:0 0 0 4px rgba(25,198,223,.12)}
+    @keyframes musicSpin{to{transform:rotate(360deg)}}
+    main{overflow:hidden}.hero{min-height:100vh;display:grid;align-items:center;padding:120px 0 78px;perspective:1200px}
+    .hero-stage{position:relative;max-width:1060px;margin:auto;padding:18px 74px 34px 0}
+    .hero-stage:after{content:"RESUME";position:absolute;right:2px;top:17%;bottom:0;width:190px;display:flex;align-items:center;justify-content:flex-start;padding-left:112px;color:rgba(255,255,255,.45);font-size:34px;font-weight:900;letter-spacing:.05em;writing-mode:vertical-rl;background:rgba(6,73,171,.54);border-radius:24px;z-index:-1}
+    .hero-card{position:relative;background:var(--paper);border:1px solid rgba(255,255,255,.55);border-radius:30px;padding:clamp(34px,6vw,70px);box-shadow:var(--shadow);transform:rotate(-1.3deg);animation:heroIn .9s cubic-bezier(.2,.75,.2,1) both;overflow:hidden}
+    .hero-card:after{content:"";position:absolute;width:340px;height:340px;right:-150px;top:-180px;border-radius:50%;background:linear-gradient(135deg,rgba(23,104,213,.11),rgba(25,198,223,.14))}
+    @keyframes heroIn{from{opacity:0;transform:translate3d(-70px,55px,0) rotate(-5deg) scale(.96)}to{opacity:1;transform:translate3d(0,0,0) rotate(-1.3deg) scale(1)}}
+    .motto-label{margin:0 0 8px;color:var(--muted);font-size:14px;letter-spacing:.12em;text-transform:uppercase}.motto{position:relative;z-index:1;max-width:850px;margin:0;color:var(--blue);font-size:clamp(42px,7vw,80px);line-height:1.05;letter-spacing:-.055em;font-weight:900}
+    .motto span{color:var(--cyan)}.summary{max-width:830px;margin:24px 0;color:var(--muted);font-size:16px}
+    .identity-card{position:relative;z-index:2;max-width:880px;margin:28px 0 24px;padding:23px 25px;color:var(--info-ink);background:var(--info-paper);border:1px solid var(--info-line);border-radius:20px;box-shadow:0 18px 38px rgba(10,65,145,.13);animation:identityIn .75s .28s cubic-bezier(.2,.75,.2,1) both}
+    .identity-head{display:flex;align-items:end;justify-content:space-between;gap:20px;padding-bottom:16px;margin-bottom:16px;border-bottom:1px solid var(--info-line)}
+    .identity-name{margin:0;font-size:28px;line-height:1.2;letter-spacing:-.035em}.identity-role{margin:4px 0 0;color:#1768d5;font-size:14px;font-weight:850}.identity-state{flex:none;padding:5px 10px;color:#1768d5;background:#eff6ff;border-radius:999px;font-size:12px;font-weight:850}
+    .school-list{display:grid;gap:12px}.school-row{display:grid;grid-template-columns:70px minmax(180px,1fr) auto;align-items:center;gap:14px}.school-type{color:#1768d5;font-size:13px;font-weight:900}.school-name{font-weight:850}.school-date{color:var(--info-muted);font-size:13px;white-space:nowrap}
+    @keyframes identityIn{from{opacity:0;transform:translateY(22px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+    .badges,.contacts,.tags{display:flex;flex-wrap:wrap;gap:9px}.badge,.tag{display:inline-flex;align-items:center;padding:7px 12px;border:1px solid var(--line);border-radius:999px;background:var(--soft);font-size:13px;font-weight:800}.badge:before{content:"";width:7px;height:7px;margin-right:7px;border-radius:50%;background:var(--cyan)}
+    .contacts{margin-top:25px}.contact{display:inline-flex;align-items:center;min-height:45px;padding:0 16px;border:1px solid var(--line);border-radius:13px;background:var(--paper);font-size:14px;font-weight:850;cursor:pointer}.contact.primary{color:#fff;background:linear-gradient(135deg,var(--blue),var(--blue-3));border-color:transparent}.contact:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(13,79,181,.15)}
+    .section{padding:62px 0}.paper{--tilt:.45deg;position:relative;padding:clamp(28px,5vw,58px);background:var(--paper);border:1px solid rgba(255,255,255,.56);border-radius:var(--radius);box-shadow:var(--shadow);transform:translateY(34px) rotate(var(--tilt));opacity:0;transition:opacity .7s ease,transform .85s cubic-bezier(.2,.75,.2,1)}.section:nth-of-type(even) .paper{--tilt:-.45deg}.paper.visible{opacity:1;transform:translateY(0) rotate(var(--tilt))}.paper:hover{transform:translateY(-4px) rotate(0deg)}
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:28px}.kicker{margin:0 0 6px;color:var(--blue);font-size:12px;font-weight:900;letter-spacing:.14em}.title{margin:0;font-size:clamp(29px,4vw,44px);line-height:1.2;letter-spacing:-.04em}.note{max-width:390px;margin:0;color:var(--muted);font-size:14px;text-align:right}
+    .highlights{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.metric{padding:22px;border:1px solid var(--line);border-radius:18px;background:var(--soft);transition:.2s}.metric:hover{transform:translateY(-4px);border-color:#8bb6ef}.metric b{display:block;color:var(--blue);font-size:29px;line-height:1.2;letter-spacing:-.04em}.metric strong{display:block;margin:8px 0 4px}.metric p{margin:0;color:var(--muted);font-size:12px;line-height:1.6}
+    .tablist{display:inline-flex;max-width:100%;padding:5px;margin-bottom:22px;overflow:auto;border:1px solid var(--line);border-radius:13px;background:var(--soft)}.tab{padding:8px 16px;border:0;border-radius:9px;background:transparent;color:var(--muted);font-weight:850;cursor:pointer;white-space:nowrap}.tab[aria-selected="true"]{color:#fff;background:linear-gradient(135deg,var(--blue),var(--blue-3));box-shadow:0 7px 16px rgba(13,79,181,.18)}.panel[hidden]{display:none}
+    .timeline{display:grid;gap:14px}.entry{padding:22px;border:1px solid var(--line);border-radius:17px;background:var(--soft)}.entry-head{display:flex;justify-content:space-between;gap:20px;margin-bottom:12px}.entry h3,.project h3,.skill h3,.edu h3,.honors h3{margin:0;font-size:20px}.org{color:var(--blue);font-size:13px;font-weight:850}.time{color:var(--muted);font-size:12px}.bullets{display:grid;gap:7px;margin:0;padding:0;list-style:none}.bullets li{position:relative;padding-left:17px;color:var(--muted);font-size:14px}.bullets li:before{content:"";position:absolute;left:0;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--cyan)}
+    .projects,.skills{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.project,.skill,.edu,.honors{padding:23px;border:1px solid var(--line);border-radius:18px;background:var(--soft)}.project p,.edu p{color:var(--muted);font-size:14px}.tags{margin-top:16px}.tag{padding:5px 9px;color:var(--blue);background:var(--paper);font-size:12px}
+    .skill-items{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.skill-item{padding:7px 10px;border:1px solid var(--line);border-radius:9px;background:var(--paper);color:var(--muted);font-size:13px;font-weight:750}.skill-item small{margin-left:5px;color:var(--blue);font-weight:850}
+    .education{display:grid;grid-template-columns:1fr 1fr;gap:14px}.degree{color:var(--blue);font-size:14px;font-weight:850}.award-list{display:grid;gap:10px;margin:15px 0 0;padding:0;list-style:none}.award-list li{display:flex;gap:10px;color:var(--muted);font-size:13px}.award-list i{font-style:normal}.award-list strong{display:block;color:var(--ink)}
+    footer{padding:30px 0 42px;color:rgba(255,255,255,.75);font-size:13px}.foot{display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.22);padding-top:20px}
+    .top{position:fixed;z-index:900;right:22px;bottom:22px;width:44px;height:44px;border:0;border-radius:13px;background:#fff;color:#1768d5;box-shadow:0 14px 30px rgba(0,25,75,.25);font-weight:900;cursor:pointer;opacity:0;transform:translateY(12px);pointer-events:none;transition:.2s}.top.show{opacity:1;transform:none;pointer-events:auto}
+    .toast{position:fixed;z-index:2000;left:50%;bottom:22px;transform:translate(-50%,12px);padding:9px 14px;border-radius:10px;background:#081b3d;color:#fff;opacity:0;transition:.2s;pointer-events:none}.toast.show{opacity:1;transform:translate(-50%,0)}
+    @media(max-width:900px){.navlinks{display:none}.hero-stage{padding-right:35px}.hero-stage:after{width:110px;padding-left:62px}.highlights{grid-template-columns:repeat(2,1fr)}.education{grid-template-columns:1fr}}
+    @media(max-width:640px){.container{width:min(calc(100% - 22px),var(--max))}.topbar{height:64px}.navbtn.print span,.music-label{display:none}.music-btn{width:40px;padding:0;justify-content:center}.hero{padding:96px 0 48px}.hero-stage{padding:0 9px 20px 0}.hero-stage:after{right:-3px;top:12%;width:72px;padding-left:39px;font-size:21px;border-radius:17px}.hero-card{padding:30px 24px;border-radius:22px}.motto{font-size:42px}.identity-card{padding:19px 17px}.identity-head{display:block}.identity-state{display:inline-flex;margin-top:10px}.school-row{grid-template-columns:54px 1fr;gap:4px 10px}.school-date{grid-column:2;white-space:normal}.summary{font-size:14px}.section{padding:35px 0}.paper{padding:25px 20px}.section-head{display:block}.note{margin-top:8px;text-align:left}.highlights,.projects,.skills{grid-template-columns:1fr}.entry-head{display:block}.contacts{gap:7px}.contact{padding:0 11px;font-size:12px}.badge{font-size:12px}.foot{display:block}}
+    @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}.paper{opacity:1;transform:rotate(var(--tilt))}}
+    @media print{@page{size:A4;margin:11mm}html[data-theme="dark"],:root{--paper:#fff;--ink:#111827;--muted:#475569;--line:#d8e0ec;--soft:#f7f9fc;--blue:#174ea6;--shadow:none}body{background:#fff;font-size:10px}.topbar,.top,.toast,.tablist,.hero-stage:after{display:none!important}.hero{min-height:auto;padding:0 0 12px}.hero-stage{padding:0}.hero-card,.paper{opacity:1;transform:none!important;box-shadow:none;border:1px solid var(--line);padding:20px}.hero-card{border-radius:18px}.motto{font-size:36px}.summary{margin:12px 0}.section{padding:9px 0}.section-head{margin-bottom:10px}.title{font-size:22px}.note{display:none}.panel,.panel[hidden]{display:block!important;margin-bottom:8px}.highlights{grid-template-columns:repeat(4,1fr)}.metric,.entry,.project,.skill,.edu,.honors{break-inside:avoid;padding:10px}.projects,.skills,.education{grid-template-columns:repeat(2,1fr)}footer{color:#475569;padding:10px 0}.contact{min-height:0;padding:4px 8px}}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">跳到主要内容</a>
+  <header class="topbar" id="topbar"><div class="container nav"><a class="brand" href="#home"><i>冯</i><span>冯若辰</span></a><nav class="navlinks" aria-label="页面导航"><a href="#highlights">亮点</a><a href="#experience">经历</a><a href="#projects">项目</a><a href="#skills">技能</a><a href="#education">教育与荣誉</a></nav><div class="actions"><button class="navbtn music-btn" id="music" type="button" aria-label="播放背景音乐" aria-pressed="false" title="播放背景音乐"><span class="music-disc" aria-hidden="true">♪</span><span class="music-label">音乐</span></button><button class="navbtn" id="theme" type="button" aria-label="切换深浅色">☾</button><button class="navbtn print" id="print" type="button">⎙ <span>打印</span></button></div></div></header>
+  <main id="main">
+    <section class="hero" id="home"><div class="container"><div class="hero-stage"><article class="hero-card" id="hero"></article></div></div></section>
+    <section class="section" id="highlights"><div class="container paper"><div class="section-head"><div><p class="kicker">KEY RESULTS</p><h2 class="title">亮点成果</h2></div><p class="note">用清晰结果呈现执行力、学习能力与团队影响力。</p></div><div class="highlights" id="highlightGrid"></div></div></section>
+    <section class="section" id="experience"><div class="container paper"><div class="section-head"><div><p class="kicker">EXPERIENCE</p><h2 class="title">经历与实践</h2></div><p class="note">大型活动执行、团队训练与英语辅导实践。</p></div><div id="experienceTabs"></div></div></section>
+    <section class="section" id="projects"><div class="container paper"><div class="section-head"><div><p class="kicker">PROJECTS</p><h2 class="title">项目经历</h2></div><p class="note">关注行动过程、解决方法与实际结果。</p></div><div id="projectTabs"></div></div></section>
+    <section class="section" id="skills"><div class="container paper"><div class="section-head"><div><p class="kicker">CAPABILITIES</p><h2 class="title">技能矩阵</h2></div><p class="note">AI应用、区块链基础与综合实践能力。</p></div><div class="skills" id="skillGrid"></div></div></section>
+    <section class="section" id="education"><div class="container paper"><div class="section-head"><div><p class="kicker">EDUCATION & HONORS</p><h2 class="title">教育背景与荣誉</h2></div><p class="note">持续学习，在集体活动与体育项目中保持投入。</p></div><div class="education" id="educationGrid"></div></div></section>
+  </main>
+  <footer><div class="container foot"><span>© 2026 冯若辰</span><span>最后更新：2026-08-15</span></div></footer>
+  <audio id="bgMusic" src="background-music.mp3" preload="auto" loop autoplay></audio>
+  <button class="top" id="backTop" type="button" aria-label="返回顶部">↑</button><div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script>
+    const resume={
+      person:{name:"冯若辰",role:"区块链工程本科生 · AI应用学习者",motto:"Let whatever happens, happen",summary:"持续进修生成式AI与智能工具应用。具备大型活动执行、队员训练、英语辅导和实验实践经验，学习主动、执行稳定，能够快速拆解任务并推动结果落地。",phone:"13610062202",qq:"892278415",location:"广州",age:18,emailParts:[]},
+      schools:[{type:"大学",name:"广州软件学院",degree:"本科 · 区块链工程",start:"2026年9月1日",end:"至今"},{type:"高中",name:"广州市第41中学",degree:"",start:"2023年9月1日",end:"2026年6月9日"}],
+      keywords:["生成式AI","区块链基础","智能合约","提示词设计","训练指导","英语辅导","团队协作","问题排查"],
+      highlights:[{value:"全国",label:"大型开幕式代表",text:"代表广州国旗护卫队参加全国中小学生运动会开幕仪式。"},{value:"市二等奖",label:"国旗护卫队竞赛",text:"以规范动作、稳定发挥和团队协作获得市级二等奖。"},{value:"1周",label:"完成新队员集训",text:"帮助新队员掌握大部分动作，受训队伍获得市三等奖。"},{value:"50→100",label:"英语辅导成绩",text:"通过计划、讲解与复盘，帮助辅导对象成绩接近翻倍。"}],
+      experience:[{id:"practice",label:"实践经历",items:[{title:"英语学习辅导",org:"学生辅导实践",bullets:["分析辅导对象在词汇、语法、阅读和答题习惯方面的薄弱环节。","制定阶段性学习计划，通过讲解、错题复盘和重点练习持续推进。","根据学习反馈调整讲解方式，将复杂知识拆分为可执行任务。","帮助辅导对象将英语成绩从约50分提升至约100分。"]}]},{id:"campus",label:"校园经历",items:[{title:"队员 / 优秀代表 / 新生指导员",org:"高中国旗护卫队",bullets:["参与队列、正步、持旗及升旗仪式训练，完成重要活动保障任务。","代表广州国旗护卫队参加全国中小学生运动会开幕仪式。","参加市级国旗护卫队比赛并获得市二等奖。","在1周内帮助新队员掌握大部分动作；受训队伍获得市三等奖。"]}]}],
+      projects:[{id:"ai",label:"AI学习",items:[{name:"人工智能能力进修与工具应用",result:"围绕生成式AI、提示词设计和智能工具应用持续学习，将工具用于资料归纳、知识梳理和任务规划。",tags:["生成式AI","提示词设计","信息检索"]}]},{id:"experiment",label:"实验实践",items:[{name:"高中经典物理实验复刻",result:"独立完成原理分析、材料准备、装置搭建、变量控制与误差排查。",tags:["实验设计","变量控制","问题排查"]}]},{id:"training",label:"团队训练",items:[{name:"国旗护卫队新队员短期训练",result:"拆分姿态、行进、衔接和整体配合模块，1周内帮助新队员掌握大部分动作。",tags:["训练规划","动作拆解","团队协同"]}]},{id:"sport",label:"体育训练",items:[{name:"多项目标运动训练",result:"以跑步和篮球为主要方向，多次参加校运会1000米项目并获得奖项。",tags:["跑步","篮球","耐力训练"]}]}],
+      skills:[{name:"专业领域",items:[["生成式AI应用","持续进修"],["区块链基础","专业方向"],["智能合约概念","基础了解"],["密码学基础","课程方向"]]},{name:"工具与方法",items:[["AI辅助检索","可应用"],["提示词设计","持续学习"],["资料归纳","可应用"],["实验复刻","实践经验"]]},{name:"语言与表达",items:[["英语学习","多次获奖"],["英语辅导","成绩翻倍"],["知识拆解","实践经验"]]},{name:"综合能力",items:[["训练指导","1周集训"],["团队协作","竞赛经验"],["责任意识","良好"],["保密意识","良好"]]}],
+      educationText:{university:"系统学习区块链工程相关知识，关注区块链底层原理、智能合约、密码学及计算机基础；主动拓展人工智能领域知识。",highSchool:"完成高中阶段学习，积极参与国旗护卫队、英语学习、物理实验复刻及体育竞赛等校园实践。"},
+      honors:["市级国旗护卫队相关比赛二等奖｜1次","全国中小学生运动会开幕仪式广州国旗护卫队代表","指导下一届国旗护卫队获得市级比赛三等奖","校运会1000米项目奖项｜多次获得","英语学科奖金 / 奖励｜多次获得","高中优秀进步奖｜多次获得","人工智能相关证书｜多项"]
+    };
+    const $=(s,c=document)=>c.querySelector(s),el=(t,c,x)=>{const n=document.createElement(t);if(c)n.className=c;if(x!==undefined)n.textContent=x;return n};
+    function toast(x){const n=$("#toast");n.textContent=x;n.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>n.classList.remove("show"),1600)}
+    function hero(){const r=$("#hero"),p=resume.person;r.append(el("p","motto-label","PERSONAL PHILOSOPHY"));const h=el("h1","motto");h.append(document.createTextNode("Let whatever happens"),el("span","",", happen"));r.append(h);const card=el("section","identity-card");card.setAttribute("aria-label","个人与教育信息");const head=el("div","identity-head"),left=el("div");left.append(el("h2","identity-name",p.name),el("p","identity-role",p.role));head.append(left,el("span","identity-state","在校学习中"));card.append(head);const schools=el("div","school-list");resume.schools.forEach(s=>{const row=el("div","school-row"),name=el("div","school-name",s.name);if(s.degree)name.append(el("small","",` · ${s.degree}`));row.append(el("span","school-type",s.type),name,el("span","school-date",`${s.start} — ${s.end}`));schools.append(row)});card.append(schools);r.append(card,el("p","summary",p.summary));const b=el("div","badges");resume.keywords.forEach(x=>b.append(el("span","badge",x)));r.append(b);const c=el("div","contacts"),phone=el("a","contact primary",`电话：${p.phone}`);phone.href=`tel:${p.phone}`;const qq=el("button","contact",`QQ：${p.qq}`);qq.type="button";qq.onclick=async()=>{try{await navigator.clipboard.writeText(p.qq);toast("QQ号码已复制")}catch{toast(`QQ：${p.qq}`)}};c.append(phone,qq,el("span","contact",`${p.location} · ${p.age}岁`));if(p.emailParts.length===2){const e=p.emailParts.join("@");const eb=el("button","contact","复制邮箱");eb.onclick=async()=>{await navigator.clipboard.writeText(e);toast("邮箱已复制")};c.append(eb)}r.append(c)}
+    function highlights(){const r=$("#highlightGrid");resume.highlights.forEach(x=>{const a=el("article","metric");a.append(el("b","",x.value),el("strong","",x.label),el("p","",x.text));r.append(a)})}
+    function bullets(arr){const u=el("ul","bullets");arr.forEach(x=>u.append(el("li","",x)));return u}
+    function tabs(root,groups,type){const list=el("div","tablist");list.setAttribute("role","tablist");const panels=[],buttons=[];groups.filter(g=>g.items.length).forEach((g,i)=>{const b=el("button","tab",g.label),p=el("div","panel");b.type="button";b.id=`${type}-t-${g.id}`;b.setAttribute("role","tab");b.setAttribute("aria-selected",i===0?"true":"false");b.setAttribute("aria-controls",`${type}-p-${g.id}`);b.tabIndex=i===0?0:-1;p.id=`${type}-p-${g.id}`;p.setAttribute("role","tabpanel");p.setAttribute("aria-labelledby",b.id);p.hidden=i!==0;if(type==="experience"){const box=el("div","timeline");g.items.forEach(x=>{const a=el("article","entry"),head=el("div","entry-head"),left=el("div");left.append(el("h3","",x.title),el("div","org",x.org));head.append(left);a.append(head,bullets(x.bullets));box.append(a)});p.append(box)}else{const box=el("div","projects");g.items.forEach(x=>{const a=el("article","project");a.append(el("h3","",x.name),el("p","",x.result));const ts=el("div","tags");x.tags.forEach(y=>ts.append(el("span","tag",y)));a.append(ts);box.append(a)});p.append(box)}list.append(b);root.append(p);buttons.push(b);panels.push(p)});root.prepend(list);function active(i,focus=false){buttons.forEach((b,j)=>{b.setAttribute("aria-selected",j===i);b.tabIndex=j===i?0:-1;panels[j].hidden=j!==i});if(focus)buttons[i].focus()}buttons.forEach((b,i)=>{b.onclick=()=>active(i);b.onkeydown=e=>{let n=null;if(e.key==="ArrowRight")n=(i+1)%buttons.length;if(e.key==="ArrowLeft")n=(i-1+buttons.length)%buttons.length;if(e.key==="Home")n=0;if(e.key==="End")n=buttons.length-1;if(n!==null){e.preventDefault();active(n,true)}}})}
+    function skills(){const r=$("#skillGrid");resume.skills.forEach(g=>{const a=el("article","skill");a.append(el("h3","",g.name));const box=el("div","skill-items");g.items.forEach(x=>{const n=el("span","skill-item",x[0]);n.append(el("small","",x[1]));box.append(n)});a.append(box);r.append(a)})}
+    function education(){const r=$("#educationGrid");resume.schools.forEach((s,index)=>{const e=el("article","edu");e.append(el("h3","",s.name),el("div","degree",[s.degree,`${s.start} — ${s.end}`].filter(Boolean).join(" · ")),el("p","",index===0?resume.educationText.university:resume.educationText.highSchool));r.append(e)});const h=el("article","honors");h.append(el("h3","","获奖与证书"));const ul=el("ul","award-list");resume.honors.forEach(x=>{const li=el("li"),i=el("i","","✦"),d=el("div");d.append(el("strong","",x));li.append(i,d);ul.append(li)});h.append(ul);r.append(h)}
+    function initMusic(){
+      const audio=$("#bgMusic"),button=$("#music");
+      let timer=null,armed=false;
+      const target=.35;
+      audio.volume=0;
+
+      function fade(to,done){
+        clearInterval(timer);
+        const steps=24,from=audio.volume,diff=(to-from)/steps;
+        let step=0;
+        timer=setInterval(()=>{
+          step++;
+          audio.volume=Math.max(0,Math.min(1,from+diff*step));
+          if(step>=steps){
+            clearInterval(timer);
+            audio.volume=to;
+            if(done)done();
+          }
+        },40);
+      }
+
+      function state(playing){
+        button.classList.toggle("playing",playing);
+        button.setAttribute("aria-pressed",String(playing));
+        button.setAttribute("aria-label",playing?"暂停背景音乐":"播放背景音乐");
+        button.title=playing?"暂停背景音乐":"播放背景音乐";
+      }
+
+      async function start(showMessage=false){
+        if(!audio.paused){state(true);fade(target);return;}
+        audio.volume=0;
+        await audio.play();
+        state(true);
+        fade(target);
+        if(showMessage)toast("背景音乐已播放");
+      }
+
+      function disarm(){
+        if(!armed)return;
+        armed=false;
+        document.removeEventListener("pointerdown",unlock,true);
+        document.removeEventListener("keydown",unlock,true);
+      }
+
+      function unlock(event){
+        if(event.target&&button.contains(event.target))return;
+        start(false).then(disarm).catch(()=>{});
+      }
+
+      function armFirstInteraction(){
+        if(armed)return;
+        armed=true;
+        document.addEventListener("pointerdown",unlock,true);
+        document.addEventListener("keydown",unlock,true);
+      }
+
+      button.onclick=async()=>{
+        disarm();
+        if(audio.paused){
+          try{await start(true)}catch{toast("请再点击一次音乐按钮")}
+        }else{
+          fade(0,()=>{audio.pause();state(false);toast("背景音乐已暂停")});
+        }
+      };
+
+      audio.addEventListener("error",()=>toast("音乐文件未找到，请确保 MP3 与网页在同一文件夹"));
+
+      start(false).catch(()=>{
+        state(false);
+        armFirstInteraction();
+      });
+    }
+    function init(){hero();highlights();tabs($("#experienceTabs"),resume.experience,"experience");tabs($("#projectTabs"),resume.projects,"project");skills();education();initMusic();const dark=matchMedia("(prefers-color-scheme:dark)").matches;let saved="";try{saved=localStorage.getItem("resume-theme")||""}catch{};setTheme(saved||(dark?"dark":"light"));$("#theme").onclick=()=>{const n=document.documentElement.dataset.theme==="dark"?"light":"dark";setTheme(n);try{localStorage.setItem("resume-theme",n)}catch{}};$("#print").onclick=()=>print();$("#backTop").onclick=()=>scrollTo({top:0,behavior:"smooth"});const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("visible");obs.unobserve(e.target)}}),{threshold:.1});document.querySelectorAll(".paper").forEach(x=>obs.observe(x));onscroll=()=>{$("#topbar").classList.toggle("scrolled",scrollY>12);$("#backTop").classList.toggle("show",scrollY>500);const links=[...document.querySelectorAll(".navlinks a")];let id="";links.forEach(a=>{const s=$(a.getAttribute("href"));if(s&&scrollY>=s.offsetTop-140)id=s.id});links.forEach(a=>a.classList.toggle("active",a.getAttribute("href")===`#${id}`))}}
+    function setTheme(t){document.documentElement.dataset.theme=t;$("#theme").textContent=t==="dark"?"☀":"☾"}
+    addEventListener("DOMContentLoaded",init);
+  </script>
+</body>
+</html>

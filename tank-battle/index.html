@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="沙暴能源站：原创 HTML5 Canvas 坦克大战 MVP" />
+    <title>沙暴能源站 · 坦克大战</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">FRC ORIGINAL // WAVEPEAK ELITE</p>
+          <h1>FRC · 沙暴能源站</h1>
+        </div>
+        <div class="topbar-actions">
+          <button class="ghost-button" id="sound-button" type="button" aria-pressed="true">音效：开</button>
+          <button class="ghost-button" id="pause-button" type="button">暂停</button>
+        </div>
+      </header>
+
+      <section class="game-layout" aria-label="坦克大战">
+        <div class="canvas-wrap">
+          <canvas id="game" width="960" height="640" aria-label="坦克大战游戏画布"></canvas>
+          <div class="screen" id="screen" role="dialog" aria-live="polite">
+            <p class="screen-kicker">ORIGINAL CANVAS MVP</p>
+            <h2 id="screen-title">守住能源核心</h2>
+            <p id="screen-copy">摧毁所有入侵坦克，保护右下角的能源核心。</p>
+            <button class="primary-button" id="start-button" type="button">开始作战</button>
+          </div>
+        </div>
+
+        <aside class="hud" aria-label="游戏数据">
+          <div class="stat-card accent"><span>当前分数</span><strong id="score">000000</strong></div>
+          <div class="stat-grid">
+            <div class="stat-card"><span>当前关卡</span><strong id="level">1 / 10</strong></div>
+            <div class="stat-card"><span>最高分</span><strong id="high-score">000000</strong></div>
+            <div class="stat-card"><span>剩余生命</span><strong id="lives">03</strong></div>
+            <div class="stat-card"><span>敌军剩余</span><strong id="enemies">00</strong></div>
+            <div class="stat-card"><span>关卡时间</span><strong id="time">90</strong></div>
+          </div>
+          <div class="stat-card skill-status"><span>技能状态</span><strong id="skills">暂无技能</strong></div>
+          <div class="stat-card skill-status"><span>AI 当前兵法</span><strong id="ai-strategy">知彼知己</strong></div>
+          <div class="mission-card">
+            <h3>作战简报</h3>
+            <p>沙暴会降低能见度。AI 会学习你的走位与瞄准；利用砖墙掩护，优先击破装甲单位。</p>
+            <div class="legend"><span><i class="dot player"></i>我方</span><span><i class="dot enemy"></i>敌军</span><span><i class="dot core"></i>核心</span></div>
+          </div>
+          <div class="controls-card">
+            <h3>操作</h3>
+            <p><kbd>WASD</kbd> / <kbd>方向键</kbd> 只控制移动（可斜走）</p>
+            <p>鼠标位置控制炮台与子弹方向 · <kbd>鼠标左键</kbd> 射击</p>
+            <p><kbd>E</kbd> 使用炸弹 · 技能包碰到即装备</p>
+            <p>每关通关增加 1 条生命；死亡后有额外生命则原地复活并无敌 3 秒</p>
+            <p><kbd>空格</kbd> 射击 · <kbd>P</kbd> 暂停</p>
+            <p><kbd>R</kbd> 重新开始</p>
+          </div>
+        </aside>
+      </section>
+
+      <footer>FRC ORIGINAL · Canvas 程序绘制 · 用户提供的开场、战斗、通关与失败音频 · MVP v1.5</footer>
+    </main>
+    <script type="module" src="src/main.js"></script>
+  </body>
+</html>

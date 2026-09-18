@@ -1,0 +1,59 @@
+:root {
+  color-scheme: dark;
+  --bg: #10161b;
+  --panel: #182229;
+  --panel-2: #202d35;
+  --line: #33434c;
+  --ink: #f3eddc;
+  --muted: #a9b4b6;
+  --orange: #e78a43;
+  --cyan: #58d1c9;
+  --red: #ef6b56;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at 70% 0%, #25343a 0, var(--bg) 48%);
+  color: var(--ink);
+  font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+}
+.shell { width: min(1240px, 100%); margin: 0 auto; padding: 26px 22px 18px; }
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+.eyebrow { margin: 0 0 5px; color: var(--cyan); font: 700 11px/1.2 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .18em; }
+h1, h2, h3, p { margin-top: 0; }
+h1 { margin-bottom: 0; font-size: clamp(28px, 4vw, 42px); letter-spacing: .08em; }
+.topbar-actions { display: flex; gap: 9px; }
+button { font: inherit; cursor: pointer; }
+.ghost-button, .primary-button { border: 1px solid var(--line); border-radius: 7px; color: var(--ink); background: #1a252b; padding: 9px 13px; }
+.ghost-button:hover { border-color: var(--cyan); color: var(--cyan); }
+.game-layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 16px; align-items: start; }
+.canvas-wrap { position: relative; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: #d89b52; box-shadow: 0 24px 60px #0008; }
+canvas { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; image-rendering: pixelated; }
+.screen { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; padding: 24px; background: linear-gradient(135deg, #12232be8, #10161be8); backdrop-filter: blur(4px); }
+.screen.hidden { display: none; }
+.screen-kicker { color: var(--orange); font: 700 12px/1 ui-monospace, monospace; letter-spacing: .16em; }
+.screen h2 { margin-bottom: 9px; font-size: clamp(26px, 4vw, 44px); }
+.screen p:not(.screen-kicker) { max-width: 440px; color: var(--muted); line-height: 1.7; }
+.screen-actions { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.primary-button { border: 0; background: var(--orange); color: #1b1712; font-weight: 800; padding: 12px 24px; }
+.primary-button:hover { background: #f0a15d; }
+.hud { display: grid; gap: 12px; }
+.stat-card, .mission-card, .controls-card { border: 1px solid var(--line); border-radius: 10px; background: #182229d9; padding: 14px; }
+.stat-card { display: grid; gap: 8px; }
+.stat-card span { color: var(--muted); font-size: 12px; }
+.stat-card strong { font: 800 25px/1 ui-monospace, monospace; letter-spacing: .08em; }
+.stat-card.accent { border-color: #8b623e; background: linear-gradient(135deg, #3a2b21, #202b31); }
+.stat-card.accent strong { color: var(--orange); font-size: 32px; }
+.skill-status strong { color: var(--cyan); font-size: 13px; letter-spacing: 0; }
+.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.mission-card, .controls-card { color: var(--muted); font-size: 13px; line-height: 1.6; }
+.mission-card h3, .controls-card h3 { color: var(--ink); margin-bottom: 8px; font-size: 14px; }
+.legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; font-size: 11px; }
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; background: var(--cyan); }
+.dot.enemy { background: var(--red); } .dot.core { background: var(--orange); }
+kbd { border: 1px solid #52636a; border-bottom-width: 2px; border-radius: 4px; padding: 1px 5px; color: var(--ink); background: #26343a; font: 11px ui-monospace, monospace; }
+footer { margin-top: 14px; color: #77878a; font-size: 11px; text-align: right; }
+@media (max-width: 850px) { .game-layout { grid-template-columns: 1fr; } .hud { grid-template-columns: repeat(2, 1fr); } .stat-card.accent, .mission-card { grid-column: span 2; } }
+@media (max-width: 520px) { .shell { padding: 16px 10px; } .topbar { align-items: flex-start; flex-direction: column; } .hud { grid-template-columns: 1fr 1fr; } .stat-card.accent, .mission-card, .controls-card { grid-column: span 2; } }
