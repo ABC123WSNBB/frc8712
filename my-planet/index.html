@@ -1388,7 +1388,8 @@ function updateFX(dt) {
   fxPhaseTime += dt;
 
   if (fxPhase === 'explode') {
-    if (fxPhaseTime >= EXPLODE_HOLD) enterText();
+    // 跳过中央祝福文字，爆发后直接展示爱心效果
+    if (fxPhaseTime >= EXPLODE_HOLD) enterHeart();
   } else if (fxPhase === 'text') {
     if (fxPhaseTime >= TEXT_HOLD) {
       blessingIndex++;
