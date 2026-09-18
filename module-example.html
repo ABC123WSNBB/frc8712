@@ -1,0 +1,7 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"><title>PlanGraphModule host example</title><style>html,body,#host{height:100%;margin:0}#host{width:100vw}</style></head><body><div id="host"></div><script type="module">
+import { mountPlanGraph } from './src/module-entry.js';
+const plans=[{id:'month-1',title:'九月目标',type:'month',date:'2026-09',status:'active',notes:'宿主负责详情',checklist:[],parentId:null},{id:'day-1',title:'完成首页草图',type:'day',date:'2026-09-17',status:'pending',notes:'',checklist:[],parentId:'month-1'}];
+const graph=mountPlanGraph(document.querySelector('#host'),{plans,onSelect:plan=>console.log('宿主收到选择',plan),onStatus:status=>console.log(status)});
+const button=document.createElement('button');button.textContent='启用摄像头';button.style.cssText='position:fixed;top:20px;left:20px;z-index:10';button.onclick=()=>graph.startCamera().catch(console.warn);document.body.append(button);
+window.addEventListener('pagehide',()=>graph.destroy());
+</script></body></html>

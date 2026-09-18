@@ -1,0 +1,8 @@
+node_modules/
+dist/
+module-dist/
+*.log
+test-results/
+.env*
+*.local
+.vscode/

@@ -1,0 +1,26 @@
+{
+  "name": "gesture-plan-app",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./module-dist/plan-graph-module.umd.cjs",
+  "module": "./module-dist/plan-graph-module.js",
+  "types": "./src/module-entry.d.ts",
+  "exports": { ".": { "types": "./src/module-entry.d.ts", "import": "./module-dist/plan-graph-module.js", "require": "./module-dist/plan-graph-module.umd.cjs" } },
+  "files": ["module-dist", "src/module-entry.d.ts", "MODULE.md"],
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5173 --strictPort",
+    "build": "vite build",
+    "build:module": "vite build -c vite.module.config.js",
+    "preview": "vite preview --host 127.0.0.1 --port 5173 --strictPort",
+    "test": "node --test tests/*.test.js"
+  },
+  "dependencies": {
+    "@mediapipe/tasks-vision": "1.0.1",
+    "3d-force-graph": "1.80.0",
+    "three": "0.186.0"
+  },
+  "devDependencies": {
+    "vite": "8.3.0"
+  }
+}

@@ -1,0 +1,5 @@
+export interface Plan { id:string; title:string; type:'day'|'month'; date:string; status?:'pending'|'active'|'done'; parentId?:string|null; notes?:string; checklist?:{text:string;done:boolean}[]; example?:boolean }
+export interface CosmicEvent {id:string;type:'comet'|'nebula';action:'pause'|'resume'|'pulse'}
+export interface Options {plans?:Plan[];width?:string;height?:string;sensitivity?:number;showPointer?:boolean;camera?:boolean;modelAssetPath?:string;wasmPath?:string;onSelect?:(plan:Plan)=>void;onStatus?:(status:string)=>void;onGesture?:(state:{mode:string;selected?:string|null;pointer?:{x:number;y:number}})=>void;onCosmicSelect?:(event:CosmicEvent)=>void;onDestroy?:(event:object)=>void}
+export interface PlanGraph {setPlans(plans:Plan[]):PlanGraph;getPlans():Plan[];select(id:string|null):PlanGraph;resetView():PlanGraph;zoom(amount:number):PlanGraph;rotate(x:number,y:number):PlanGraph;getCosmicObjects():{id:string;type:string;x:number;y:number;visible:boolean}[];interactCosmic(id:string):PlanGraph;startCamera():Promise<PlanGraph>;stopCamera():PlanGraph;destroy():void}
+export function mountPlanGraph(container:HTMLElement,options?:Options):PlanGraph;
