@@ -432,20 +432,20 @@
     </div>
   </form>
 </dialog>
-<script id="starDefaults" type="application/json">{"title":"MY UNIVERSE","subtitle":"我的专属星球","blessings":["宋雨馨","愿你眼里有光","心中有热爱","一路繁花","万事胜意"]}</script>
+<script id="starDefaults" type="application/json">{"title":"","subtitle":"","blessings":["星球"]}</script>
 <script>
 (() => {
   const defaults = JSON.parse(document.getElementById('starDefaults').textContent);
   const key = 'my-supernova:' + JSON.stringify(defaults);
-  const valid = v => v && typeof v.title === 'string' && v.title.trim() && v.title.length <= 24 && typeof v.subtitle === 'string' && v.subtitle.trim() && v.subtitle.length <= 36 && Array.isArray(v.blessings) && v.blessings.length > 0 && v.blessings.length <= 8 && v.blessings.every(s => typeof s === 'string' && s.trim() && [...s].length <= 12);
+  const valid = v => v && typeof v.title === 'string' && v.title.length <= 24 && typeof v.subtitle === 'string' && v.subtitle.length <= 36 && Array.isArray(v.blessings) && v.blessings.length > 0 && v.blessings.length <= 8 && v.blessings.every(s => typeof s === 'string' && s.length <= 12);
   let settings = defaults;
   try { const saved = JSON.parse(localStorage.getItem(key)); if (valid(saved)) settings = saved; } catch {}
   window.starSettings = settings;
   function apply(v) {
     window.starSettings = v;
-    document.querySelector('.title h1').textContent = v.title;
-    document.querySelector('.title .sub').textContent = v.subtitle;
-    document.title = v.subtitle + ' · ' + v.title;
+    const titleEl = document.querySelector('.title');
+    if (titleEl) titleEl.hidden = true;
+    document.title = '我的星球 · MY UNIVERSE';
   }
   apply(settings);
   const dialog = document.getElementById('customize');
