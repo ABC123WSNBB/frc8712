@@ -1,5 +1,9 @@
 export const GESTURE_RATES = Object.freeze({ zoomIn: .38, zoomOut: .48, rotation: 1.7 });
 
+const READY_MS = 100;
+const PINCH_ENTER_MS = 45;
+const RELEASE_MS = 55;
+
 export function smoothFeatures(previous, next, dt) {
   const result = { ...next };
   for (const key of ['x', 'y', 'yaw', 'pitch', 'openness']) {
@@ -31,7 +35,7 @@ export class GestureState {
   step(f, time, target = null) {
     if (!f) { this.reset(); return this.emit('lost'); }
     if (this.readyAt === null) this.readyAt = time;
-    if (time - this.readyAt < 200) return this.emit('settling');
+    if (time - this.readyAt < READY_MS) return this.emit('settling');
 
     if (this.fired) {
       if (target === this.fired) this.awaySince = null;
@@ -47,7 +51,7 @@ export class GestureState {
       }
       if (f.pinch > .50) {
         this.releaseSince ??= time;
-        if (time - this.releaseSince >= 80) {
+        if (time - this.releaseSince >= RELEASE_MS) {
           const click = !this.turned && this.locked !== this.fired ? this.locked : null;
           this.pinched = false; this.pinchSince = null; this.releaseSince = null;
           this.locked = null; this.anchor = null; this.previous = null; this.candidate = null;
@@ -68,7 +72,7 @@ export class GestureState {
         this.anchor = { yaw: f.yaw, pitch: f.pitch };
       }
       this.clearDwell(); this.candidate = null;
-      if (time - this.pinchSince < 80) return this.emit('settling');
+      if (time - this.pinchSince < PINCH_ENTER_MS) return this.emit('settling');
       this.pinched = true; this.locked = this.pendingTarget; this.turned = false;
       this.previous = { ...this.anchor };
       return this.emit('pinch');
@@ -95,7 +99,7 @@ export class GestureState {
     else if (f.openness < 1.72) desired = 'zoomOut';
     if (desired === 'idle') { this.candidate = null; this.previous = null; return this.emit('idle'); }
     if (desired !== this.candidate) { this.candidate = desired; this.since = time; this.previous = null; }
-    const hold = desired === 'zoomIn' ? 120 : desired === 'zoomOut' ? 180 : 300;
+    const hold = desired === 'zoomIn' ? 70 : desired === 'zoomOut' ? 90 : 120;
     if (time - this.since < hold) return this.emit('settling');
     return this.emit(desired, desired === 'rotate' ? this.motion(f) : {});
   }

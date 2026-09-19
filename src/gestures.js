@@ -1,23 +1,26 @@
 import { FilesetResolver, HandLandmarker } from '@mediapipe/tasks-vision';
-// handpose_x-style static classification: 2D joint-angle constraints over 21 landmarks.
+// Normalized geometric features: thresholds remain stable as the hand moves
+// toward/away from the camera and do not depend on a particular hand size.
 const angle2d=(a,b,c)=>{const ux=a.x-b.x,uy=a.y-b.y,vx=c.x-b.x,vy=c.y-b.y;return Math.acos(Math.max(-1,Math.min(1,(ux*vx+uy*vy)/(Math.hypot(ux,uy)*Math.hypot(vx,vy)||1))))};
 const fingerTriples=[[1,2,4],[5,6,8],[9,10,12],[13,14,16],[17,18,20]];
 const distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y,a.z-b.z);
-export function features(points, previousPose='idle') {
+export function features(points) {
   const scale=Math.max(distance(points[5],points[17]),.001);
   const bends=fingerTriples.map(([base,joint,tip])=>angle2d(points[base],points[joint],points[tip]));
-  const extended=bends.map((a,i)=>a>2.45&&distance(points[fingerTriples[i][2]],points[0])>distance(points[fingerTriples[i][1]],points[0])*1.08);
-  const open=extended.every(Boolean);
-  const fist=bends.slice(1).every(a=>a<1.95)&&[8,12,16,20].every(i=>distance(points[i],points[0])<distance(points[i-3],points[0])*1.4);
-  const bowl=!open&&!fist&&bends.slice(1).filter(a=>a>1.35&&a<2.75).length>=3;
+  const reach=fingerTriples.map(([, ,tip])=>distance(points[tip],points[0])/scale);
+  const extended=bends.map((a,i)=>a>2.35 && reach[i]>1.55);
+  // Thumb is allowed to be partly folded: it should not prevent a natural open palm.
+  const open=extended.slice(1).every(Boolean) && reach[0]>1.05;
+  const fist=extended.slice(1).filter(Boolean).length===0 && reach.slice(1).every(v=>v<1.55);
+  const bowl=!open&&!fist&&extended.slice(1).filter(Boolean).length>=1;
   const pinch=distance(points[4],points[8])/scale;
-  const openness=[8,12,16,20].reduce((sum,i)=>sum+distance(points[i],points[0])/scale,0)/4;
+  const openness=reach.slice(1).reduce((sum,v)=>sum+v,0)/4;
   const u={x:points[5].x-points[17].x,y:points[5].y-points[17].y,z:points[5].z-points[17].z};
   const v={x:points[9].x-points[0].x,y:points[9].y-points[0].y,z:points[9].z-points[0].z};
   const n={x:u.y*v.z-u.z*v.y,y:u.z*v.x-u.x*v.z,z:u.x*v.y-u.y*v.x};
   // Normalize handedness/sign to prevent mirrored palms from reversing tilt.
   const sign=n.z<0?-1:1;
-  return { pose:open?'zoomIn':fist?'zoomOut':bowl?'rotate':extended[0]?'point':'idle', openness, pinch, x:1-points[8].x,y:points[8].y,yaw:Math.atan2(n.x*sign,Math.abs(n.z)),pitch:Math.atan2(n.y*sign,Math.hypot(n.x,n.z)) };
+  return { pose:open?'zoomIn':fist?'zoomOut':bowl?'rotate':(extended[0]&&!extended.slice(1).some(Boolean))?'point':'idle', openness, pinch, x:1-points[8].x,y:points[8].y,yaw:Math.atan2(n.x*sign,Math.abs(n.z)),pitch:Math.atan2(n.y*sign,Math.hypot(n.x,n.z)) };
 }
 export { GestureState, smoothFeatures, GESTURE_RATES } from './gesture-state.js';
 export function createHandController({video,onFrame,onStatus,modelAssetPath=`${import.meta.env.BASE_URL}mediapipe/hand_landmarker.task`,wasmPath=`${import.meta.env.BASE_URL}mediapipe/wasm`}){

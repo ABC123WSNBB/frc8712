@@ -46,15 +46,15 @@ test('turning cancels locked click even if wrist returns; tiny motion accumulate
   assert.equal(n.step(f({pose:'rotate',yaw:.06}),1100).dx,0);
 });
 
-test('zoom dwell, asymmetric latency, hysteresis and immediate exit', () => {
+test('zoom has short dwell, hysteresis and immediate exit', () => {
   const s=ready();const open=f({openness:2}),closed=f({openness:1.6});
   assert.equal(s.step(open,300).mode,'settling');
-  assert.equal(s.step(open,419).mode,'settling');
-  assert.equal(s.step(open,420).mode,'zoomIn');
+  assert.equal(s.step(open,369).mode,'settling');
+  assert.equal(s.step(open,370).mode,'zoomIn');
   assert.equal(s.step(f({openness:1.85}),500).mode,'zoomIn');
   assert.equal(s.step(f({openness:1.81}),520).mode,'idle');
-  s.step(closed,600);assert.equal(s.step(closed,779).mode,'settling');
-  assert.equal(s.step(closed,780).mode,'zoomOut');
+  s.step(closed,600);assert.equal(s.step(closed,689).mode,'settling');
+  assert.equal(s.step(closed,690).mode,'zoomOut');
   assert.equal(s.step(f({openness:1.79}),800).mode,'zoomOut');
   assert.equal(s.step(f({openness:1.81}),820).mode,'idle');
   assert.equal(s.step(pinch,840,'A').mode,'settling');
