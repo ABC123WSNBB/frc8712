@@ -1,4 +1,4 @@
-export const GESTURE_RATES = Object.freeze({ zoomIn: .38, zoomOut: .28, rotation: 1.7 });
+export const GESTURE_RATES = Object.freeze({ zoomIn: .38, zoomOut: .48, rotation: 1.7 });
 
 export function smoothFeatures(previous, next, dt) {
   const result = { ...next };
@@ -58,7 +58,7 @@ export class GestureState {
         return this.emit(this.turned ? 'pinchRotate' : 'pinch');
       }
       this.releaseSince = null;
-      return this.emit(this.turned ? 'pinchRotate' : 'pinch', this.turned ? this.motion(f) : {});
+      return this.emit(this.turned ? 'pinchRotate' : 'pinch', this.motion(f));
     }
     // Reserve the whole pinch debounce interval so zoom or dwell cannot win it.
     if (f.pinch < .38) {

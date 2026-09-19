@@ -1,17 +1,15 @@
 import { FilesetResolver, HandLandmarker } from '@mediapipe/tasks-vision';
+// handpose_x-style static classification: 2D joint-angle constraints over 21 landmarks.
+const angle2d=(a,b,c)=>{const ux=a.x-b.x,uy=a.y-b.y,vx=c.x-b.x,vy=c.y-b.y;return Math.acos(Math.max(-1,Math.min(1,(ux*vx+uy*vy)/(Math.hypot(ux,uy)*Math.hypot(vx,vy)||1))))};
+const fingerTriples=[[1,2,4],[5,6,8],[9,10,12],[13,14,16],[17,18,20]];
 const distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y,a.z-b.z);
 export function features(points, previousPose='idle') {
   const scale=Math.max(distance(points[5],points[17]),.001);
-  const bends=[5,9,13,17].map(i=>{
-    const a=points[i], b=points[i+1], c=points[i+3];
-    const u=[a.x-b.x,a.y-b.y,a.z-b.z],v=[c.x-b.x,c.y-b.y,c.z-b.z];
-    return Math.acos(Math.max(-1,Math.min(1,u.reduce((s,x,j)=>s+x*v[j],0)/(Math.hypot(...u)*Math.hypot(...v)||1))));
-  });
-  const extended=bends.map((a,i)=>a>(previousPose==='zoomIn'?2.5:2.65)&&distance(points[8+i*4],points[0])>distance(points[6+i*4],points[0])*1.1);
-  const thumb=distance(points[4],points[9])/scale;
-  const open=extended.every(Boolean)&&thumb>(previousPose==='zoomIn'?.8:.95);
-  const fist=bends.every(a=>a<(previousPose==='zoomOut'?1.95:1.75))&&[8,12,16,20].every(i=>distance(points[i],points[0])<distance(points[i-3],points[0])*1.35);
-  const bowl=!open&&!fist&&bends.filter(a=>a>(previousPose==='rotate'?1.5:1.65)&&a<(previousPose==='rotate'?2.95:2.85)).length>=3;
+  const bends=fingerTriples.map(([base,joint,tip])=>angle2d(points[base],points[joint],points[tip]));
+  const extended=bends.map((a,i)=>a>2.45&&distance(points[fingerTriples[i][2]],points[0])>distance(points[fingerTriples[i][1]],points[0])*1.08);
+  const open=extended.every(Boolean);
+  const fist=bends.slice(1).every(a=>a<1.95)&&[8,12,16,20].every(i=>distance(points[i],points[0])<distance(points[i-3],points[0])*1.4);
+  const bowl=!open&&!fist&&bends.slice(1).filter(a=>a>1.35&&a<2.75).length>=3;
   const pinch=distance(points[4],points[8])/scale;
   const openness=[8,12,16,20].reduce((sum,i)=>sum+distance(points[i],points[0])/scale,0)/4;
   const u={x:points[5].x-points[17].x,y:points[5].y-points[17].y,z:points[5].z-points[17].z};
@@ -22,7 +20,7 @@ export function features(points, previousPose='idle') {
   return { pose:open?'zoomIn':fist?'zoomOut':bowl?'rotate':extended[0]?'point':'idle', openness, pinch, x:1-points[8].x,y:points[8].y,yaw:Math.atan2(n.x*sign,Math.abs(n.z)),pitch:Math.atan2(n.y*sign,Math.hypot(n.x,n.z)) };
 }
 export { GestureState, smoothFeatures, GESTURE_RATES } from './gesture-state.js';
-export function createHandController({video,onFrame,onStatus,modelAssetPath='/mediapipe/hand_landmarker.task',wasmPath='/mediapipe/wasm'}){
+export function createHandController({video,onFrame,onStatus,modelAssetPath=`${import.meta.env.BASE_URL}mediapipe/hand_landmarker.task`,wasmPath=`${import.meta.env.BASE_URL}mediapipe/wasm`}){
   let detector,stream,frame,active=false,lastTime=-1,generation=0,disposed=false;
   return {
     async start(){
@@ -33,7 +31,7 @@ export function createHandController({video,onFrame,onStatus,modelAssetPath='/me
         onStatus('正在加载手势识别…');
         const vision=await FilesetResolver.forVisionTasks(wasmPath);
         if(current!==generation)return;
-        if(!detector){const loaded=await HandLandmarker.createFromOptions(vision,{baseOptions:{modelAssetPath,delegate:'CPU'},runningMode:'VIDEO',numHands:1,minHandDetectionConfidence:.65,minTrackingConfidence:.65});if(current!==generation){loaded.close();return;}detector=loaded;}
+        if(!detector){const loaded=await HandLandmarker.createFromOptions(vision,{baseOptions:{modelAssetPath,delegate:'GPU'},runningMode:'VIDEO',numHands:1,minHandDetectionConfidence:.5,minHandPresenceConfidence:.5,minTrackingConfidence:.5});if(current!==generation){loaded.close();return;}detector=loaded;}
         if(current!==generation)return;
         const requested=await navigator.mediaDevices.getUserMedia({video:{width:640,height:480,facingMode:'user'},audio:false});
         if(current!==generation){requested.getTracks().forEach(t=>t.stop());return;}
